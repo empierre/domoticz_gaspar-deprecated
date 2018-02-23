@@ -24,6 +24,7 @@ import requests
 import html
 import sys
 import os
+import re
 import logging
 from lxml import etree
 import xml.etree.ElementTree as ElementTree
@@ -140,6 +141,16 @@ def get_data_per_year(session):
 
 def _get_data(session, resource_id, start_date=None, end_date=None):
 
+    session.headers = {
+                'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Mobile Safari/537.36',
+                'Accept-Language':'fr,fr-FR;q=0.8,en;q=0.6',
+                'Accept-Encoding':'gzip, deflate, br', 
+                'Accept':'application/xml, application/json, text/javascript, */*; q=0.01',
+                'Faces-Request':'partial/ajax',
+                'Origin':'https://monespace.grdf.fr',
+                'Referer':'https://monespace.grdf.fr/monespace/particulier/consommation/tableau-de-bord',
+                'X-Requested-With':'XMLHttpRequest'}
+
     payload = {
                 'javax.faces.partial.ajax':'true',
                 'javax.faces.source':'_eConsosynthese_WAR_eConsoportlet_:j_idt5:j_idt121',
@@ -162,10 +173,36 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
                'p_p_col_count':'5',
                'p_p_col_pos':'1',
                '_eConsosynthese_WAR_eConsoportlet__jsfBridgeAjax':'true',
-               '_eConsosynthese_WAR_eConsoportlet__facesViewIdResource':'%2Fviews%2Fcompteur%2Fsynthese%2FsyntheseViewMode.xhtml' }
+               '_eConsosynthese_WAR_eConsoportlet__facesViewIdResource':'/views/compteur/synthese/syntheseViewMode.xhtml' }
+
+    r=session.get('https://monespace.grdf.fr/monespace/particulier/consommation/tableau-de-bord', allow_redirects=False)
+
+    m = re.search("ViewState\" +value=\"(.*?)\"", r.text)
+    value = m.group(1)
+    print(value)
+    global JAVAVXS
+    JAVAVXS=value
+
+    payload = {
+                'javax.faces.partial.ajax':'true',
+                'javax.faces.source':'_eConsosynthese_WAR_eConsoportlet_:j_idt5:j_idt121',
+                'javax.faces.partial.execute':'_eConsosynthese_WAR_eConsoportlet_:j_idt5:j_idt121',
+                'javax.faces.partial.render':'_eConsosynthese_WAR_eConsoportlet_:j_idt5',
+                'javax.faces.behavior.event':'click',
+                'javax.faces.partial.event':'click',
+                '_eConsosynthese_WAR_eConsoportlet_':'j_idt5:_eConsosynthese_WAR_eConsoportlet_:j_idt5',
+                'javax.faces.encodedURL':'https://monespace.grdf.fr/web/guest/monespace/particulier/consommation/tableau-de-bord?p_p_id=eConsosynthese_WAR_eConsoportlet&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&p_p_col_id=column-3&p_p_col_count=5&p_p_col_pos=1&_eConsosynthese_WAR_eConsoportlet__jsfBridgeAjax=true&_eConsosynthese_WAR_eConsoportlet__facesViewIdResource=%2Fviews%2Fcompteur%2Fsynthese%2FsyntheseViewMode.xhtml',
+               'javax.faces.ViewState': JAVAVXS }
 
 
-    req = session.post('https://monespace.grdf.fr/web/guest/monespace/particulier/consommation/tableau-de-bord', allow_redirects=False, data=payload, params=params)
+
+    session.cookies['KPISavedRef'] ='https://monespace.grdf.fr/monespace/particulier/consommation/tableau-de-bord'
+
+    req = session.post('https://monespace.grdf.fr/monespace/particulier/consommation/tableau-de-bord', allow_redirects=False, data=payload, params=params)
+    #print(session.headers)
+    #print(session.cookies)
+    print(payload)
+    print(req.text)
 
     # We send the session token so that the server knows who we are
     payload = {
@@ -196,7 +233,7 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
 
     session.cookies['KPISavedRef'] ='https://monespace.grdf.fr/monespace/particulier/consommation/tableau-de-bord'
 
-    req = session.post('https://monespace.grdf.fr/web/guest/monespace/particulier/consommation/tableau-de-bord', allow_redirects=False, data=payload, params=params)
+    req = session.post('https://monespace.grdf.fr/monespace/particulier/consommation/tableau-de-bord', allow_redirects=False, data=payload, params=params)
 
     print(payload)
     print(req.text)
