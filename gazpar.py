@@ -28,6 +28,7 @@ import re
 import logging
 from lxml import etree
 import xml.etree.ElementTree as ElementTree
+import io
 
 
 LOGIN_BASE_URI = 'https://monespace.grdf.fr/web/guest/monespace'
@@ -177,8 +178,13 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
 
     r=session.get('https://monespace.grdf.fr/monespace/particulier/consommation/tableau-de-bord', allow_redirects=False)
 
-    m = re.search("ViewState\" +value=\"(.*?)\"", r.text)
-    value = m.group(1)
+    #m = re.search("ViewState\" +value=\"(.*?)\"", r.text)
+    #value = m.group(1)
+    parser = etree.HTMLParser()
+    tree   = etree.parse(io.StringIO(r.text), parser)
+    value=tree.xpath("//div[@id='_eConsosynthese_WAR_eConsoportlet_']/form[@id='_eConsosynthese_WAR_eConsoportlet_:j_idt5']/input[@id='javax.faces.ViewState']/@value")
+
+
     print(value)
     global JAVAVXS
     JAVAVXS=value
@@ -201,8 +207,8 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
     req = session.post('https://monespace.grdf.fr/monespace/particulier/consommation/tableau-de-bord', allow_redirects=False, data=payload, params=params)
     #print(session.headers)
     #print(session.cookies)
-    print(payload)
-    print(req.text)
+    #print(payload)
+    #print(req.text)
 
     # We send the session token so that the server knows who we are
     payload = {
@@ -235,8 +241,14 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
 
     req = session.post('https://monespace.grdf.fr/monespace/particulier/consommation/tableau-de-bord', allow_redirects=False, data=payload, params=params)
 
-    print(payload)
-    print(req.text)
+    #print(payload)
+    #print(req.text)
+    m = re.search("categories = \"(.*?)\"", req.text)
+    value = m.group(1)
+    print(value)
+    m = re.search("donneesCourante = \"(.*?)\"", req.text)
+    value = m.group(1)
+    print(value)
 
     if 300 <= req.status_code < 400:
         # So... apparently, we may need to do that once again if we hit a 302
