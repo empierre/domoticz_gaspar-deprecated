@@ -129,19 +129,23 @@ def login(username, password):
 
 def get_data_per_hour(session, start_date, end_date):
     """Retreives hourly energy consumption data."""
-    return _get_data(session, 'urlCdcHeure', start_date, end_date)
+    return _get_data(session, 'Heure', start_date, end_date)
 
 def get_data_per_day(session, start_date, end_date):
     """Retreives daily energy consumption data."""
-    return _get_data(session, 'urlCdcJour', start_date, end_date)
+    return _get_data(session, 'Jour', start_date, end_date)
+
+def get_data_per_week(session, start_date, end_date):
+    """Retreives weekly energy consumption data."""
+    return _get_data(session, 'Semaine', start_date, end_date)
 
 def get_data_per_month(session, start_date, end_date):
     """Retreives monthly energy consumption data."""
-    return _get_data(session, 'urlCdcMois', start_date, end_date)
+    return _get_data(session, 'Mois', start_date, end_date)
 
 def get_data_per_year(session):
     """Retreives yearly energy consumption data."""
-    return _get_data(session, 'urlCdcAn')
+    return _get_data(session, 'Mois')
 
 def _get_data(session, resource_id, start_date=None, end_date=None):
 
@@ -188,7 +192,7 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
     value=tree.xpath("//div[@id='_eConsosynthese_WAR_eConsoportlet_']/form[@id='_eConsosynthese_WAR_eConsoportlet_:j_idt5']/input[@id='javax.faces.ViewState']/@value")
 
 
-    print(value)
+    #print(value)
     global JAVAVXS
     JAVAVXS=value
 
@@ -224,7 +228,7 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
                'javax.faces.ViewState': JAVAVXS,
                '_eConsosynthese_WAR_eConsoportlet_':'j_idt5:_eConsosynthese_WAR_eConsoportlet_:j_idt5',
                'javax.faces.encodedURL':'https://monespace.grdf.fr/web/guest/monespace/particulier/consommation/tableau-de-bord?p_p_id=eConsosynthese_WAR_eConsoportlet&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&p_p_col_id=column-3&p_p_col_count=5&p_p_col_pos=1&_eConsosynthese_WAR_eConsoportlet__jsfBridgeAjax=true&_eConsosynthese_WAR_eConsoportlet__facesViewIdResource=%2Fviews%2Fcompteur%2Fsynthese%2FsyntheseViewMode.xhtml',
-               '_eConsosynthese_WAR_eConsoportlet_:j_idt5:j_idt25':'Jour'
+               '_eConsosynthese_WAR_eConsoportlet_:j_idt5:j_idt25':resource_id
     }
 
     params = {
@@ -248,10 +252,10 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
     # Parse to get the data
     m = re.search("categories = \"(.*?)\"", req.text)
     t = m.group(1)
-    print(t)
+    #print(t)
     m = re.search("donneesCourante = \"(.*?)\"", req.text)
     d = m.group(1)
-    print(d)
+    #print(d)
 
 
     # Make json
@@ -262,7 +266,7 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
     data = {}
     i=0
     while i<size:
-        print(ts[i]+"/"+str(now.year)+" "+ds[i]+ " "+str(i))
+        #print(ts[i]+"/"+str(now.year)+" "+ds[i]+ " "+str(i))
         data[ts[i]+"/"+str(now.year)] = ds[i]
         i +=1
     json_data = json.dumps(data)
