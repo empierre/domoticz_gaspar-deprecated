@@ -1,9 +1,9 @@
-
-# pre-requisite: activate load curve recording on GrDf website
-enable your GrDf account (https://monespace.grdf.fr/monespace/particulier/accueil) and the data collection ("Consommation" > "Gérer ma courbe de charge" > "Activer ma courbe de charge")
-
 # domoticz_gaspar
-get Gazpar smart meter data and push it to domoticz
+Get Gazpar smart meter data and push it to domoticz
+
+!!!Experimental!!!
+
+If you appreciate this software, please show it off ! [![PayPal donate button](http://img.shields.io/paypal/donate.png?color=yellow)](https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=epierre@e-nef.com&currency_code=EUR&amount=&item_name=thanks "Donate once-off to this project using Paypal")
 
 # create a device in Domoticz
 - In Domoticz, go to hardware, create a virtual "rfx meter counter".
