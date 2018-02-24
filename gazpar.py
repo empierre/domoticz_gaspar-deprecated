@@ -29,6 +29,9 @@ import logging
 from lxml import etree
 import xml.etree.ElementTree as ElementTree
 import io
+import json
+import datetime
+
 
 
 LOGIN_BASE_URI = 'https://monespace.grdf.fr/web/guest/monespace'
@@ -241,31 +244,47 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
 
     req = session.post('https://monespace.grdf.fr/monespace/particulier/consommation/tableau-de-bord', allow_redirects=False, data=payload, params=params)
 
-    #print(payload)
-    #print(req.text)
-    m = re.search("categories = \"(.*?)\"", req.text)
-    value = m.group(1)
-    print(value)
-    m = re.search("donneesCourante = \"(.*?)\"", req.text)
-    value = m.group(1)
-    print(value)
 
-    if 300 <= req.status_code < 400:
-        # So... apparently, we may need to do that once again if we hit a 302
-        # ¯\_(ツ)_/¯
-        req = session.post(API_BASE_URI + API_ENDPOINT_DATA, allow_redirects=False, data=payload, params=params)
+    # Parse to get the data
+    m = re.search("categories = \"(.*?)\"", req.text)
+    t = m.group(1)
+    print(t)
+    m = re.search("donneesCourante = \"(.*?)\"", req.text)
+    d = m.group(1)
+    print(d)
+
+
+    # Make json
+    now = datetime.datetime.now()
+    ts=t.split(",")
+    ds=d.split(",")
+    size=len(ts)
+    data = {}
+    i=0
+    while i<size:
+        print(ts[i]+"/"+str(now.year)+" "+ds[i]+ " "+str(i))
+        data[ts[i]+"/"+str(now.year)] = ds[i]
+        i +=1
+    json_data = json.dumps(data)
+
+ 
+
+    #if 300 <= req.status_code < 400:
+    #   # So... apparently, we may need to do that once again if we hit a 302
+    #   # ¯\_(ツ)_/¯
+    #   req = session.post(API_BASE_URI + API_ENDPOINT_DATA, allow_redirects=False, data=payload, params=params)
 
     if req.status_code == 200 and req.text is not None and "Conditions d'utilisation" in req.text:
         raise GazparLoginException("You need to accept the latest Terms of Use. Please manually log into the website, "
                                   "then come back.")
 
     try:
-        res = req.json()
+        res = data
     except:
-        logging.info("Unable to log in")
+        logging.info("Unable to get data")
         sys.exit(os.EX_SOFTWARE)
 
-    if res['etat'] and res['etat']['valeur'] == 'erreur' and res['etat']['erreurText']:
-        raise GazparServiceException(html.unescape(res['etat']['erreurText']))
+    #if res['etat'] and res['etat']['valeur'] == 'erreur' and res['etat']['erreurText']:
+    #    raise GazparServiceException(html.unescape(res['etat']['erreurText']))
 
     return res

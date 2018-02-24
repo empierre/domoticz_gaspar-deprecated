@@ -89,15 +89,8 @@ def export_hours_values(res):
 
 # Export the JSON file for daily consumption (for the past rolling 30 days)
 def export_days_values(res):
-    days_x_values = generate_x_axis(res, \
-                                    'days', "%d %b", 1)
-    days_y_values = generate_y_axis(res)
-    days_values = []
-
-    for i in range(0,len(days_x_values)):
-        days_values.append({"time" : days_x_values[i], "conso" : days_y_values[i]})
     with open(BASEDIR+"/export_days_values.json", 'w+') as outfile:
-        json.dump(days_values, outfile)
+        json.dump(res, outfile)
 
 
 # Export the JSON file for monthly consumption (for the current year, starting 12 months from today)
@@ -172,15 +165,15 @@ def main():
             logging.info("days values non exported")
             sys.exit(70)
 
-        try:
-            export_months_values(res_month)
-        except Exception:
-            logging.info("months values non exported")
+#        try:
+#            export_months_values(res_month)
+#        except Exception:
+#            logging.info("months values non exported")
 
-        try:
-            export_years_values(res_year)
-        except Exception:
-        	logging.info("years values non exported")
+#        try:
+#            export_years_values(res_year)
+#        except Exception:
+#        	logging.info("years values non exported")
 
 ############################################
  
