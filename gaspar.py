@@ -260,6 +260,8 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
 
     # Make json
     now = datetime.datetime.now()
+    if resource_id=="Mois":
+        t="Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec"
     ts=t.split(",")
     ds=d.split(",")
     size=len(ts)
@@ -267,7 +269,9 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
     i=0
     while i<size:
         #print(ts[i]+"/"+str(now.year)+" "+ds[i]+ " "+str(i))
-        data[ts[i]+"/"+str(now.year)] = ds[i]
+        #data[ts[i]+"/"+str(now.year)] = ds[i]
+        if ds[i]!="null":
+            data[ts[i]] = ds[i]
         i +=1
     json_data = json.dumps(data)
 
