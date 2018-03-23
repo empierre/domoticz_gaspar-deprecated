@@ -6,27 +6,31 @@ Get Gazpar smart meter data and push it to domoticz
 If you appreciate this software, please show it off ! [![PayPal donate button](http://img.shields.io/paypal/donate.png?color=yellow)](https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=epierre@e-nef.com&currency_code=EUR&amount=&item_name=thanks "Donate once-off to this project using Paypal")
 
 # create a device in Domoticz
-- In Domoticz, go to hardware, create a virtual "rfx meter counter".
+- In Domoticz, go to hardware, create a virtual "rfx meter counter" or "Dummy".
 - Then in Devices, add it to the devices. (mark down the id for later).
-- When in Utility, edit the device and change it to Electricity type.
+- When in Utility, edit the device and change it to Electric (instant+counter) type.
 
 ## modules to install
 
-    sudo apt-get install sqlite3
+    sudo apt-get install sqlite3 node npm
     sudo apt-get install python3 python3-numpy python3-dateutil python3-requests
     npm install winston 
     git clone https://github.com/empierre/domoticz_gaspar.git
 
-## change login and pass, base dir of this script and domoticz path
+## rename configuration file, change login/pass/id
 
-    nano domoticz_gaspar.sh
+    cp _domoticz_gaspar.cfg domoticz_gaspar.cfg
+    nano domoticz_gaspar.cfg
 
 and change:
 
-    export GAZPAR_USERNAME="nom.prenom@mail.com"
-    export GAZPAR_PASSWORD="password"
-    BASE_DIR="/home/pi/domoticz/domoticz_gaspar"
+    GASPAR_USERNAME="nom.prenom@mail.com"
+    GASPAR_PASSWORD="password"
     DOMOTICZ_ID=547
+
+Where DOMOTICZ_ID is id device on domoticz. 
+
+Configuration file will not be deleted in future updates.
 
 
 ## testing before launch
@@ -39,7 +43,7 @@ N.B. If login is not ok, you'll get a nodejs error on console for data will be m
 
 Then check the login credential if they are ok:
 
-    gaspar.log
+    domoticz_gaspar.log
 
 If this is good, you'll get several json files in the directory
 
