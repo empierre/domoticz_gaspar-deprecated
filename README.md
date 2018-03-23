@@ -19,7 +19,7 @@ If you appreciate this software, please show it off ! [![PayPal donate button](h
 
 ## change login and pass, base dir of this script and domoticz path
 
-    nano domoticz_gazpar.sh
+    nano domoticz_gaspar.sh
 
 and change:
 
@@ -33,16 +33,16 @@ and change:
 
 Manually launch
 
-    ./domoticz_gazpar.sh
+    ./domoticz_gaspar.sh
 
 N.B. If login is not ok, you'll get a nodejs error on console for data will be missing (will be changed).
 
 Then check the login credential if they are ok:
 
-    gazpar.log
+    gaspar.log
 
 If this is good, you'll get several json files in the directory
 
 ## Add to your cron tab (with crontab -e):
 
-    30 7,17 * * * /home/pi/domoticz/domoticz_gaspar/domoticz_gazpar.sh
+    30 7,17 * * * /home/pi/domoticz/domoticz_gaspar/domoticz_gaspar.sh

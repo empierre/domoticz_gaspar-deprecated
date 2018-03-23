@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-# Adapted to gazpar (C) 2018 epierre
+# Adapted to gaspar (C) 2018 epierre
 """Generates energy consumption JSON files from GrDf consumption data
 collected via their  website (API).
 """
@@ -23,13 +23,13 @@ import datetime
 import logging
 import sys
 import json
-import gazpar
+import gaspar
 from dateutil.relativedelta import relativedelta
 from lxml import etree
 import xml.etree.ElementTree as ElementTree
 
-USERNAME = os.environ['GAZPAR_USERNAME']
-PASSWORD = os.environ['GAZPAR_PASSWORD']
+USERNAME = os.environ['GASPAR_USERNAME']
+PASSWORD = os.environ['GASPAR_PASSWORD']
 BASEDIR = os.environ['BASE_DIR']
 
 # Generate y axis (consumption values) 
@@ -110,30 +110,30 @@ def main():
 
     try:
         logging.info("logging in as %s...", USERNAME)
-        token = gazpar.login(USERNAME, PASSWORD)
+        token = gaspar.login(USERNAME, PASSWORD)
         logging.info("logged in successfully!")
 
         logging.info("retrieving data...")
         today = datetime.date.today()
         
         # Years
-        res_year = gazpar.get_data_per_year(token)
+        res_year = gaspar.get_data_per_year(token)
 
         # 12 months ago - today
-        res_month = gazpar.get_data_per_month(token, dtostr(today - relativedelta(months=11)), \
+        res_month = gaspar.get_data_per_month(token, dtostr(today - relativedelta(months=11)), \
                                              dtostr(today))
 
         # Weeks
-        res_week = gazpar.get_data_per_week(token, dtostr(today - relativedelta(months=11)), \
+        res_week = gaspar.get_data_per_week(token, dtostr(today - relativedelta(months=11)), \
                                              dtostr(today))
 
         # One month ago - yesterday
-        res_day = gazpar.get_data_per_day(token, dtostr(today - relativedelta(days=1, months=1)), \
+        res_day = gaspar.get_data_per_day(token, dtostr(today - relativedelta(days=1, months=1)), \
                                          dtostr(today - relativedelta(days=1)))
 
 
         # Yesterday 
-        #res_hour = gazpar.get_data_per_hour(token, dtostr(today - relativedelta(days=2)), \
+        #res_hour = gaspar.get_data_per_hour(token, dtostr(today - relativedelta(days=2)), \
         #                                   dtostr(today - relativedelta(days=1)))
         
 
@@ -169,7 +169,7 @@ def main():
 
 ############################################
  
-    except gazpar.LinkyLoginException as exc:
+    except gaspar.LinkyLoginException as exc:
         logging.error(exc)
         sys.exit(1)
 

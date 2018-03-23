@@ -4,7 +4,7 @@
 """
 # Linkindle - Linky energy consumption curves on a Kindle display.
 # Copyright (C) 2016 Baptiste Candellier
-# Adapted to gazpar (C) 2018 epierre
+# Adapted to gaspar (C) 2018 epierre
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
