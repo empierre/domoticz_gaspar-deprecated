@@ -1,3 +1,7 @@
 v20180323 - epierre
   - unique configuration file
   - install domoticz_gaspar directory where you want
+  - dataset filtering
+v20180324 - epierre
+  - complete refactoring to use consommations instead of tableau de bord allowing to get past periods
+  - fiabilizations of dates, now multi-years

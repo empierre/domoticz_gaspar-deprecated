@@ -152,20 +152,20 @@ def main():
             logging.info("days values non exported")
             sys.exit(70)
 
-        try:
-            export_weeks_values(res_week)
-        except Exception:
-            logging.info("weeks values non exported")
+        #try:
+        #    export_weeks_values(res_week)
+        #except Exception:
+        #    logging.info("weeks values non exported")
 
         try:
             export_months_values(res_month)
         except Exception:
             logging.info("months values non exported")
 
-        try:
-            export_years_values(res_year)
-        except Exception:
-        	logging.info("years values non exported")
+        #try:
+        #    export_years_values(res_year)
+        #except Exception:
+        # 	logging.info("years values non exported")
 
 ############################################
  
