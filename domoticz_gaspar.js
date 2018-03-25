@@ -40,7 +40,7 @@ function pad(n, width, z) {
 
 function getTotal() {
         try {
-                var fileExport = 'export_years_values.json';
+                var fileExport = 'export_months_values.json';
                 var filePath = path.resolve(BASE_DIR, fileExport);
                 var obj = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
@@ -51,7 +51,7 @@ function getTotal() {
                 return(conso_cumul);
         } catch (e) {
                 // It isn't accessible
-                console.log("Exception opening export_years_values.json : "+e);
+                console.log("Exception opening export_months_values.json : "+e);
         }
 
 }
@@ -77,22 +77,8 @@ function generateDayHours() {
 }
 function getCumulBefore(year,month) {
         // Bring back the year-month previous total as domoticz expect it
-        try {
-                var fileExport = 'export_years_values.json';
-                var filePath = path.resolve(BASE_DIR, fileExport);
-                var obj = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-
-                var conso_cumul=0.0;
-                for (var i = 0; i < Object.keys(obj).length; ++i) {
-                         if (obj[i]["time"]<year) {
-                                 conso_cumul= conso_cumul+ (obj[i]["conso"]);
-                        }
-                }
-        } catch (e) {
-                // It isn't accessible
-                console.log("Exception opening export_years_values.json : "+e);
-        }
         var mth=[ 'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        conso_cumul=0
         try {
                 var fileExport = 'export_months_values.json';
                 var filePath = path.resolve(BASE_DIR, fileExport);
@@ -107,7 +93,7 @@ function getCumulBefore(year,month) {
         }
 }
 function generateMonthDays() {
-        var cumul=getCumulBefore(q_year,q_month_s);
+        var cumul=Number(getCumulBefore(q_year,q_month_s));
         var mth=[ 'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
         try {
@@ -115,10 +101,10 @@ function generateMonthDays() {
                 var filePath = path.resolve(BASE_DIR, fileExport);
                 var obj = JSON.parse(fs.readFileSync(filePath, 'utf8'));
                 for (var i = 0; i < Object.keys(obj).length; ++i) {
-                        var req_date=''+q_year+'-'+pad((mth.indexOf(obj[i]["time"].substr(3, 3))+1),2)+'-'+pad(obj[i]["time"].substr(0, 2),2);
+                        var req_date=pad(obj[i]["time"].substr(6, 4),4)+'-'+pad(obj[i]["time"].substr(3, 2),2)+'-'+pad(obj[i]["time"].substr(0, 2),2)
                         if (obj[i]["conso"]>0) {
-                                console.log('DELETE FROM \'Meter_Calendar\' WHERE devicerowid='+devicerowid+' and date = \''+req_date+'\'; INSERT INTO \'Meter_Calendar\' (DeviceRowID,Value,Counter,Date) VALUES ('+devicerowid+', \''+Number((obj[i]["conso"]*1000).toFixed(2))+'\', \''+Math.round(cumul*1000)/1000+'\', \''+req_date+'\');') ;
-                                cumul=cumul+(obj[i]["conso"]);
+                                console.log('DELETE FROM \'Meter_Calendar\' WHERE devicerowid='+devicerowid+' and date = \''+req_date+'\'; INSERT INTO \'Meter_Calendar\' (DeviceRowID,Value,Counter,Date) VALUES ('+devicerowid+', \''+Number((obj[i]["conso"]))+'\', \''+Math.round(cumul)+'\', \''+req_date+'\');') ;
+                                cumul+=Number(obj[i]["conso"]);
                         }
                 }
         } catch (e) {
