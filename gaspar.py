@@ -292,13 +292,15 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
     ts=t.split(",")
     ds=d.split(",")
     size=len(ts)
-    data = {}
+    data = []
     i=0
     while i<size:
         #print(ts[i]+"/"+str(now.year)+" "+ds[i]+ " "+str(i))
         #data[ts[i]+"/"+str(now.year)] = ds[i]
         if ds[i]!="null":
-            data[ts[i].replace('Le ','')] = ds[i]
+            #data[ts[i].replace('Le ','')] = ds[i]
+            data.append({'conso':ds[i], 'time':ts[i].replace('Le ','')})
+            
         i +=1
     json_data = json.dumps(data)
 

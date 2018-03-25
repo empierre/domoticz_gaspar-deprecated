@@ -11,7 +11,6 @@ update_db () {
   PY_SCRIPT="${BASE_DIR}"/"${PY_SCRIPT}"
   /usr/bin/python3 "${PY_SCRIPT}" $1 -o "${BASE_DIR}" >> "${BASE_DIR}"/"${LOG_FILE}" 2>&1
   if  [ $? -eq 0 ]; then
-    exit
     BASE_DIR="${BASE_DIR}" /usr/bin/nodejs "${BASE_DIR}"/domoticz_gaspar.js "${DOMOTICZ_ID}" > "${BASE_DIR}"/req.sql
      cat "${BASE_DIR}"/req.sql | /usr/bin/sqlite3 "${HOME}"/domoticz/domoticz.db
   fi
