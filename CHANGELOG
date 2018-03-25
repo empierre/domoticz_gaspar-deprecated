@@ -5,3 +5,4 @@ v20180323 - epierre
 v20180324 - epierre
   - complete refactoring to use consommations instead of tableau de bord allowing to get past periods
   - fiabilizations of dates, now multi-years
+  - added dynamic period in parameters

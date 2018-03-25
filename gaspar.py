@@ -45,6 +45,7 @@ API_ENDPOINT_DATA = '/consommation/tableau-de-bord'
 DATA_NOT_REQUESTED = -1
 DATA_NOT_AVAILABLE = -2
 
+
 class LinkyLoginException(Exception):
     """Thrown if an error was encountered while retrieving energy consumption data."""
     pass
@@ -93,8 +94,6 @@ def login(username, password):
     req = session.post(LOGIN_BASE_URI + API_ENDPOINT_LOGIN, data=payload, allow_redirects=False)
 
     javaxvs=parse_lxml(req.text)
-
-    global JAVAVXS
 
     JAVAVXS=javaxvs
 
@@ -237,9 +236,8 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
     #print(req.text)
 
 
-    if resource_id=="Jour":
-        # We send the session token so that the server knows who we are
-        payload = {
+    # We send the session token so that the server knows who we are
+    payload = {
                'javax.faces.partial.ajax':'true',
                'javax.faces.source':'_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:panelTypeGranularite1:2',
                'javax.faces.partial.execute':'_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:panelTypeGranularite1',
@@ -248,16 +246,16 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
                'javax.faces.partial.event':'change',
                '_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille':'_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille',
                'javax.faces.encodedURL':'https://monespace.grdf.fr/web/guest/monespace/particulier/consommation/consommations?p_p_id=eConsoconsoDetaille_WAR_eConsoportlet&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&p_p_col_id=column-3&p_p_col_count=7&p_p_col_pos=2&_eConsoconsoDetaille_WAR_eConsoportlet__jsfBridgeAjax=true&_eConsoconsoDetaille_WAR_eConsoportlet__facesViewIdResource=%2Fviews%2Fconso%2Fdetaille%2FconsoDetailleViewMode.xhtml',
-               '_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:idDateDebutConsoDetaille':'23/03/2017',
-               '_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:idDateFinConsoDetaille':'23/03/2018',
-               '_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:panelTypeGranularite1':'jour',
+               '_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:idDateDebutConsoDetaille':start_date,
+               '_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:idDateFinConsoDetaille':end_date,
+               '_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:panelTypeGranularite1':resource_id.lower(),
                '_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:panelTypeGranularite3':'mois',
                '_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:selecteurVolumeType2':'kwh',
                '_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:selecteurVolumeType4':'kwh',
                'javax.faces.ViewState': JAVAVXS
-        }
+    }
 
-        params = {
+    params = {
                'p_p_id':'eConsoconsoDetaille_WAR_eConsoportlet',
                'p_p_lifecycle':'2',
                'p_p_state':'normal',
@@ -268,17 +266,17 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
                'p_p_col_pos':'2',
                '_eConsosynthese_WAR_eConsoportlet__jsfBridgeAjax':'true',
                '_eConsosynthese_WAR_eConsoportlet__facesViewIdResource':'/views/conso/detaille/consoDetailleViewMode.xhtml'
-        }
+    }
 
-        session.cookies['KPISavedRef'] ='https://monespace.grdf.fr/monespace/particulier/consommation/consommations'
+    session.cookies['KPISavedRef'] ='https://monespace.grdf.fr/monespace/particulier/consommation/consommations'
 
-        req = session.post('https://monespace.grdf.fr/monespace/particulier/consommation/consommations', allow_redirects=False, data=payload, params=params)
+    req = session.post('https://monespace.grdf.fr/monespace/particulier/consommation/consommations', allow_redirects=False, data=payload, params=params)
 
 
-        #print(session.headers)
-        #print(session.cookies)
-        #print(payload)
-        #print(req.text)
+    #print(session.headers)
+    #print(session.cookies)
+    #print(payload)
+    #print(req.text)
 
     # Parse to get the data
     md = re.search("donneesCourante = \"(.*?)\"", req.text)
@@ -287,7 +285,6 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
     mt = re.search("tooltipDatesInfo = \"(.*?)\"", req.text)
     t = mt.group(1)
     #print(mt)
-
 
     # Make json
     now = datetime.datetime.now()

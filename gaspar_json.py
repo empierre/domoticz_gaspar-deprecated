@@ -117,15 +117,15 @@ def main():
         today = datetime.date.today()
         
         # Years
-        res_year = gaspar.get_data_per_year(token)
+        #res_year = gaspar.get_data_per_year(token)
 
         # 12 months ago - today
         res_month = gaspar.get_data_per_month(token, dtostr(today - relativedelta(months=11)), \
                                              dtostr(today))
 
         # Weeks
-        res_week = gaspar.get_data_per_week(token, dtostr(today - relativedelta(months=11)), \
-                                             dtostr(today))
+        #res_week = gaspar.get_data_per_week(token, dtostr(today - relativedelta(months=11)), \
+        #                                     dtostr(today))
 
         # One month ago - yesterday
         res_day = gaspar.get_data_per_day(token, dtostr(today - relativedelta(days=1, months=1)), \
