@@ -13,7 +13,7 @@ If you appreciate this software, please show it off ! [![PayPal donate button](h
 ## modules to install
 
     sudo apt-get install sqlite3 node npm
-    sudo apt-get install python3 python3-numpy python3-dateutil python3-requests
+    sudo apt-get install python3 python3-numpy python3-dateutil python3-requests python3-lxml
     npm install winston 
     git clone https://github.com/empierre/domoticz_gaspar.git
 
