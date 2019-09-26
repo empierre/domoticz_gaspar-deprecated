@@ -36,7 +36,7 @@ import datetime
 
 LOGIN_BASE_URI = 'https://monespace.grdf.fr/web/guest/monespace'
 API_BASE_URI = 'https://monespace.grdf.fr/monespace/particulier'
-JAVAVXS = ''
+global JAVAVXS
 
 API_ENDPOINT_LOGIN = '?p_p_id=EspacePerso_WAR_EPportlet&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&p_p_col_id=column-2&p_p_col_count=1&_EspacePerso_WAR_EPportlet__jsfBridgeAjax=true&_EspacePerso_WAR_EPportlet__facesViewIdResource=%2Fviews%2FespacePerso%2FseconnecterEspaceViewMode.xhtml'
 API_ENDPOINT_HOME = '/accueil'
@@ -64,6 +64,7 @@ def login(username, password):
     """Logs the user into the Linky API.
     """
     session = requests.Session()
+    global JAVAVXS
 
     payload = {
                'javax.faces.partial.ajax': 'true',
@@ -93,9 +94,9 @@ def login(username, password):
     
     req = session.post(LOGIN_BASE_URI + API_ENDPOINT_LOGIN, data=payload, allow_redirects=False)
 
-    javaxvs=parse_lxml(req.text)
+    javaxvs2=parse_lxml(req.text)
 
-    JAVAVXS=javaxvs
+    JAVAVXS=javaxvs2
 
 #    print(session.cookies.get_dict())
 
@@ -107,7 +108,7 @@ def login(username, password):
                'javax.faces.partial.render': 'EspacePerso_WAR_EPportlet_:global _EspacePerso_WAR_EPportlet_:groupTitre',
                'javax.faces.behavior.event': 'click',
                'javax.faces.partial.event': 'click',
-               'javax.faces.ViewState': javaxvs,
+               'javax.faces.ViewState': javaxvs2,
                '_EspacePerso_WAR_EPportlet_:seConnecterForm': '_EspacePerso_WAR_EPportlet_:seConnecterForm',
                'javax.faces.encodedURL': 'https://monespace.grdf.fr/web/guest/monespace?p_p_id=EspacePerso_WAR_EPportlet&amp;p_p_lifecycle=2&amp;p_p_state=normal&amp;p_p_mode=view&amp;p_p_cacheability=cacheLevelPage&amp;p_p_col_id=column-2&amp;p_p_col_count=1&amp;_EspacePerso_WAR_EPportlet__jsfBridgeAjax=true&amp;_EspacePerso_WAR_EPportlet__facesViewIdResource=%2Fviews%2FespacePerso%2FseconnecterEspaceViewMode.xhtml',
                '_EspacePerso_WAR_EPportlet_:seConnecterForm:email': username,
@@ -147,6 +148,7 @@ def get_data_per_year(session):
     return _get_data(session, 'Mois')
 
 def _get_data(session, resource_id, start_date=None, end_date=None):
+    global JAVAVXS
 
     session.headers = {
                 'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Mobile Safari/537.36',
@@ -196,7 +198,6 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
 
 
     #print(value)
-    global JAVAVXS
     JAVAVXS=value
 
     #Step 1
