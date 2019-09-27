@@ -19,6 +19,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#connexion -> accueil -> consommation/tableau-de-bord -> consommation/consommations 
+
 import base64
 import requests
 import html
@@ -85,6 +87,8 @@ def login(username, password):
                 'Accept-Encoding':'gzip, deflate, br', 
                 'Accept':'application/xml, application/json, text/javascript, */*; q=0.01',
                 'Faces-Request':'partial/ajax',
+				'Sec-Fetch-Mode':'no-cors',
+                'Sec-Fetch-Site':'same-origin',
                 'Origin':'https://monespace.grdf.fr',
                 'Referer':'https://monespace.grdf.fr/monespace/connexion'}
 
@@ -120,6 +124,8 @@ def login(username, password):
     #print(payload)
     session_cookie = req.cookies.get('GRDF_EP')
     #print(session_cookie)
+    #print('\n0- monespace req.text\n')
+    #print(req.text)
 
     if not 'GRDF_EP' in session.cookies:
         raise LinkyLoginException("Login unsuccessful. Check your credentials.")
@@ -156,19 +162,22 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
                 'Accept-Encoding':'gzip, deflate, br', 
                 'Accept':'application/xml, application/json, text/javascript, */*; q=0.01',
                 'Faces-Request':'partial/ajax',
+				'Host': 'monespace.grdf.fr',
                 'Origin':'https://monespace.grdf.fr',
-                'Referer':'https://monespace.grdf.fr/monespace/particulier/consommation/tableau-de-bord',
+                'Referer':'https://monespace.grdf.fr/monespace/particulier/consommation/consommation',
+				'Sec-Fetch-Mode': 'cors',
+				'Sec-Fetch-Site': 'same-origin',
                 'X-Requested-With':'XMLHttpRequest'}
 
     payload = {
                 'javax.faces.partial.ajax':'true',
-                'javax.faces.source':'_eConsosynthese_WAR_eConsoportlet_:j_idt5:j_idt121',
-                'javax.faces.partial.execute':'_eConsosynthese_WAR_eConsoportlet_:j_idt5:j_idt121',
-                'javax.faces.partial.render':'_eConsosynthese_WAR_eConsoportlet_:j_idt5',
+                'javax.faces.source':'_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:j_idt139',
+                'javax.faces.partial.execute':'_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:j_idt139',
+                'javax.faces.partial.render':'_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille',
                 'javax.faces.behavior.event':'click',
                 'javax.faces.partial.event':'click',
-                '_eConsosynthese_WAR_eConsoportlet_':'j_idt5:_eConsosynthese_WAR_eConsoportlet_:j_idt5',
-                'javax.faces.encodedURL':'https://monespace.grdf.fr/web/guest/monespace/particulier/consommation/tableau-de-bord?p_p_id=eConsosynthese_WAR_eConsoportlet&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&p_p_col_id=column-3&p_p_col_count=5&p_p_col_pos=1&_eConsosynthese_WAR_eConsoportlet__jsfBridgeAjax=true&_eConsosynthese_WAR_eConsoportlet__facesViewIdResource=%2Fviews%2Fcompteur%2Fsynthese%2FsyntheseViewMode.xhtml',
+                '_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille':' _eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille',
+                'javax.faces.encodedURL':'https://monespace.grdf.fr/web/guest/monespace/particulier/consommation/consommations?p_p_id=eConsoconsoDetaille_WAR_eConsoportlet&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&p_p_col_id=column-3&p_p_col_count=5&p_p_col_pos=3&_eConsoconsoDetaille_WAR_eConsoportlet__jsfBridgeAjax=true&_eConsoconsoDetaille_WAR_eConsoportlet__facesViewIdResource=%2Fviews%2Fconso%2Fdetaille%2FconsoDetailleViewMode.xhtml',
                'javax.faces.ViewState': JAVAVXS }
 
 
@@ -180,7 +189,7 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
                'p_p_cacheability':'cacheLevelPage',
                'p_p_col_id':'column-3',
                'p_p_col_count':'5',
-               'p_p_col_pos':'1',
+               'p_p_col_pos':'3',
                '_eConsosynthese_WAR_eConsoportlet__jsfBridgeAjax':'true',
                '_eConsosynthese_WAR_eConsoportlet__facesViewIdResource':'/views/compteur/synthese/syntheseViewMode.xhtml' }
 
@@ -188,7 +197,8 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
     #print(session.headers)
     #print(session.cookies)
     #print(payload)
-    #print(r.text)
+    print('\n1- consommations 1er appel r.text\n')
+    print(r.text)
 
     #m = re.search("ViewState\" +value=\"(.*?)\"", r.text)
     #value = m.group(1)
@@ -196,20 +206,20 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
     tree   = etree.parse(io.StringIO(r.text), parser)
     value=tree.xpath("//div[@id='_eConsoconsoDetaille_WAR_eConsoportlet_']/form[@id='_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille']/input[@id='javax.faces.ViewState']/@value")
 
-
-    #print(value)
+    print('\n2- consommations id xpath value\n')
+    print(value)
     JAVAVXS=value
 
     #Step 1
     payload = {
                'javax.faces.partial.ajax':'true',
-               'javax.faces.source':'_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:j_idt106',
-               'javax.faces.partial.execute':'_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:j_idt106',
+               'javax.faces.source':'_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:j_idt139',
+               'javax.faces.partial.execute':'_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:j_idt139',
                'javax.faces.partial.render':'_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille',
                'javax.faces.behavior.event':'click',
                'javax.faces.partial.event':'click',
                '_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille':'_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille',
-               'javax.faces.encodedURL':'https://monespace.grdf.fr/web/guest/monespace/particulier/consommation/consommations?p_p_id=eConsoconsoDetaille_WAR_eConsoportlet&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&p_p_col_id=column-3&p_p_col_count=7&p_p_col_pos=2&_eConsoconsoDetaille_WAR_eConsoportlet__jsfBridgeAjax=true&_eConsoconsoDetaille_WAR_eConsoportlet__facesViewIdResource=%2Fviews%2Fconso%2Fdetaille%2FconsoDetailleViewMode.xhtml',
+               'javax.faces.encodedURL':'https://monespace.grdf.fr/web/guest/monespace/particulier/consommation/consommations?p_p_id=eConsoconsoDetaille_WAR_eConsoportlet&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&p_p_col_id=column-3&p_p_col_count=5&p_p_col_pos=3&_eConsoconsoDetaille_WAR_eConsoportlet__jsfBridgeAjax=true&_eConsoconsoDetaille_WAR_eConsoportlet__facesViewIdResource=%2Fviews%2Fconso%2Fdetaille%2FconsoDetailleViewMode.xhtml',
                'javax.faces.ViewState': JAVAVXS
     }
 
@@ -220,8 +230,8 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
                'p_p_mode':'view',
                'p_p_cacheability':'cacheLevelPage',
                'p_p_col_id':'column-3',
-               'p_p_col_count':'7',
-               'p_p_col_pos':'2',
+               'p_p_col_count':'5',
+               'p_p_col_pos':'3',
                '_eConsoconsoDetaille_WAR_eConsoportlet__jsfBridgeAjax':'true',
                '_eConsoconsoDetaille_WAR_eConsoportlet__facesViewIdResource':'/views/conso/detaille/consoDetailleViewMode.xhtml'
     }
@@ -234,19 +244,19 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
     #print(session.headers)
     #print(session.cookies)
     #print(payload)
-    #print(req.text)
+    print('\n3- consommations 2e appel req.text\n')
+    print(req.text)
 
 
     # We send the session token so that the server knows who we are
     payload = {
                'javax.faces.partial.ajax':'true',
-               'javax.faces.source':'_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:panelTypeGranularite1:2',
-               'javax.faces.partial.execute':'_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:panelTypeGranularite1',
-               'javax.faces.partial.render':'_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:refreshHighchart _eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:updateDatesBean _eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:boutonTelechargerDonnees _eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:panelTypeGranularite _eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:idBlocSeuilParametrage',
-               'javax.faces.behavior.event':'valueChange',
-               'javax.faces.partial.event':'change',
-               '_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille':'_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille',
-               'javax.faces.encodedURL':'https://monespace.grdf.fr/web/guest/monespace/particulier/consommation/consommations?p_p_id=eConsoconsoDetaille_WAR_eConsoportlet&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&p_p_col_id=column-3&p_p_col_count=7&p_p_col_pos=2&_eConsoconsoDetaille_WAR_eConsoportlet__jsfBridgeAjax=true&_eConsoconsoDetaille_WAR_eConsoportlet__facesViewIdResource=%2Fviews%2Fconso%2Fdetaille%2FconsoDetailleViewMode.xhtml',
+               'javax.faces.source':'_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:j_idt47',
+               'javax.faces.partial.execute':'_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:idPanelDatesConsoDetaille',
+               'javax.faces.partial.render':'eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:idMessageDate2 _eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:idMessageDate1 _eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:refreshHighchart _eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:panelTypeGranularite',
+               '_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:j_idt47': '_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:j_idt47',
+			   '_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille': '_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille',
+			   'javax.faces.encodedURL': 'https://monespace.grdf.fr/web/guest/monespace/particulier/consommation/consommations?p_p_id=eConsoconsoDetaille_WAR_eConsoportlet&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&p_p_col_id=column-3&p_p_col_count=5&p_p_col_pos=3&_eConsoconsoDetaille_WAR_eConsoportlet__jsfBridgeAjax=true&_eConsoconsoDetaille_WAR_eConsoportlet__facesViewIdResource=%2Fviews%2Fconso%2Fdetaille%2FconsoDetailleViewMode.xhtml',
                '_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:idDateDebutConsoDetaille':start_date,
                '_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:idDateFinConsoDetaille':end_date,
                '_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille:panelTypeGranularite1':resource_id.lower(),
@@ -263,8 +273,8 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
                'p_p_mode':'view',
                'p_p_cacheability':'cacheLevelPage',
                'p_p_col_id':'column-3',
-               'p_p_col_count':'7',
-               'p_p_col_pos':'2',
+               'p_p_col_count':'5',
+               'p_p_col_pos':'3',
                '_eConsosynthese_WAR_eConsoportlet__jsfBridgeAjax':'true',
                '_eConsosynthese_WAR_eConsoportlet__facesViewIdResource':'/views/conso/detaille/consoDetailleViewMode.xhtml'
     }
@@ -273,15 +283,21 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
 
     req = session.post('https://monespace.grdf.fr/monespace/particulier/consommation/consommations', allow_redirects=False, data=payload, params=params)
 
-
-    #print(session.headers)
-    #print(session.cookies)
+    print('\n4.1- header\n')
+    print(session.headers)
+    print('\n4.2- cookies\n')
+    print(session.cookies)
+    print('\n4- req.text\n')
+    print(req.text)
+    #print('\n5- payload\n')
     #print(payload)
-    #print(req.text)
+    print(req.status_code)
+
 
     # Parse to get the data
     md = re.search("donneesCourante = \"(.*?)\"", req.text)
     d = md.group(1)
+    print('\n6- d\n')
     #print(d)
     mt = re.search("tooltipDatesInfo = \"(.*?)\"", req.text)
     t = mt.group(1)
