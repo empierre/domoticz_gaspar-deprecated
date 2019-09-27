@@ -197,8 +197,8 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
     #print(session.headers)
     #print(session.cookies)
     #print(payload)
-    print('\n1- consommations 1er appel r.text\n')
-    print(r.text)
+    #print('\n1- consommations 1er appel r.text\n')
+    #print(r.text)
 
     #m = re.search("ViewState\" +value=\"(.*?)\"", r.text)
     #value = m.group(1)
@@ -206,8 +206,8 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
     tree   = etree.parse(io.StringIO(r.text), parser)
     value=tree.xpath("//div[@id='_eConsoconsoDetaille_WAR_eConsoportlet_']/form[@id='_eConsoconsoDetaille_WAR_eConsoportlet_:idFormConsoDetaille']/input[@id='javax.faces.ViewState']/@value")
 
-    print('\n2- consommations id xpath value\n')
-    print(value)
+    #print('\n2- consommations id xpath value\n')
+    #print(value)
     JAVAVXS=value
 
     #Step 1
@@ -244,8 +244,8 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
     #print(session.headers)
     #print(session.cookies)
     #print(payload)
-    print('\n3- consommations 2e appel req.text\n')
-    print(req.text)
+    #print('\n3- consommations 2e appel req.text\n')
+    #print(req.text)
 
 
     # We send the session token so that the server knows who we are
@@ -283,21 +283,21 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
 
     req = session.post('https://monespace.grdf.fr/monespace/particulier/consommation/consommations', allow_redirects=False, data=payload, params=params)
 
-    print('\n4.1- header\n')
-    print(session.headers)
-    print('\n4.2- cookies\n')
-    print(session.cookies)
-    print('\n4- req.text\n')
-    print(req.text)
+    #print('\n4.1- header\n')
+    #print(session.headers)
+    #print('\n4.2- cookies\n')
+    #print(session.cookies)
+    #print('\n4- req.text\n')
+    #print(req.text)
     #print('\n5- payload\n')
     #print(payload)
-    print(req.status_code)
+    #print(req.status_code)
 
 
     # Parse to get the data
     md = re.search("donneesCourante = \"(.*?)\"", req.text)
     d = md.group(1)
-    print('\n6- d\n')
+    #print('\n6- d\n')
     #print(d)
     mt = re.search("tooltipDatesInfo = \"(.*?)\"", req.text)
     t = mt.group(1)
