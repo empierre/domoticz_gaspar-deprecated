@@ -84,8 +84,10 @@ function getCumulBefore(year,month) {
                 var filePath = path.resolve(BASE_DIR, fileExport);
                 var obj = JSON.parse(fs.readFileSync(filePath, 'utf8'));
                 for (var i = 0; i < month-1; ++i) {
-                         conso_cumul= conso_cumul+ (obj[i]["conso"]);
+                         conso_cumul= conso_cumul + Number(obj[i]["conso"]);
+                         //console.log(obj[i]["conso"])
                 }
+                //console.log(year+" "+month+" "+conso_cumul)
                 return(conso_cumul);
         } catch (e) {
                 // It isn't accessible
@@ -94,6 +96,7 @@ function getCumulBefore(year,month) {
 }
 function generateMonthDays() {
         var cumul=Number(getCumulBefore(q_year,q_month_s));
+        //console.log(cumul)
         var mth=[ 'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
         try {
@@ -101,7 +104,7 @@ function generateMonthDays() {
                 var filePath = path.resolve(BASE_DIR, fileExport);
                 var obj = JSON.parse(fs.readFileSync(filePath, 'utf8'));
                 for (var i = 0; i < Object.keys(obj).length; ++i) {
-                        var req_date=pad(obj[i]["time"].substr(6, 4),4)+'-'+pad(obj[i]["time"].substr(3, 2),2)+'-'+pad(obj[i]["time"].substr(0, 2),2)
+                        var req_date=pad(obj[i]["time"].substr(9, 4),4)+'-'+pad(obj[i]["time"].substr(6, 2),2)+'-'+pad(obj[i]["time"].substr(3, 2),2)
                         if (obj[i]["conso"]>0) {
                                 console.log('DELETE FROM \'Meter_Calendar\' WHERE devicerowid='+devicerowid+' and date = \''+req_date+'\'; INSERT INTO \'Meter_Calendar\' (DeviceRowID,Value,Counter,Date) VALUES ('+devicerowid+', \''+Number((obj[i]["conso"]))+'\', \''+Math.round(cumul)+'\', \''+req_date+'\');') ;
                                 cumul+=Number(obj[i]["conso"]);
