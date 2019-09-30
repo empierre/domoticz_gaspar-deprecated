@@ -106,7 +106,7 @@ function generateMonthDays() {
                 for (var i = 0; i < Object.keys(obj).length; ++i) {
                         var req_date=pad(obj[i]["time"].substr(6, 4),4)+'-'+pad(obj[i]["time"].substr(3, 2),2)+'-'+pad(obj[i]["time"].substr(0, 2),2)
                         if (obj[i]["conso"]>0) {
-                                console.log('DELETE FROM \'Meter_Calendar\' WHERE devicerowid='+devicerowid+' and date = \''+req_date+'\'; INSERT INTO \'Meter_Calendar\' (DeviceRowID,Value,Counter,Date) VALUES ('+devicerowid+', \''+Number((obj[i]["conso"]))+'\', \''+Math.round(cumul)+'\', \''+req_date+'\');') ;
+                                console.log('DELETE FROM \'Meter_Calendar\' WHERE devicerowid='+devicerowid+' and date = \''+req_date+'\'; INSERT INTO \'Meter_Calendar\' (DeviceRowID,Value,Counter,Date) VALUES ('+devicerowid+', \''+Number((obj[i]["conso"]*1000))+'\', \''+Math.round(cumul)+'\', \''+req_date+'\');') ;
                                 cumul+=Number(obj[i]["conso"]);
                         }
                 }
