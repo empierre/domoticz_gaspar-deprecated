@@ -104,7 +104,7 @@ function generateMonthDays() {
                 var filePath = path.resolve(BASE_DIR, fileExport);
                 var obj = JSON.parse(fs.readFileSync(filePath, 'utf8'));
                 for (var i = 0; i < Object.keys(obj).length; ++i) {
-                        var req_date=pad(obj[i]["time"].substr(9, 4),4)+'-'+pad(obj[i]["time"].substr(6, 2),2)+'-'+pad(obj[i]["time"].substr(3, 2),2)
+                        var req_date=pad(obj[i]["time"].substr(6, 4),4)+'-'+pad(obj[i]["time"].substr(3, 2),2)+'-'+pad(obj[i]["time"].substr(0, 2),2)
                         if (obj[i]["conso"]>0) {
                                 console.log('DELETE FROM \'Meter_Calendar\' WHERE devicerowid='+devicerowid+' and date = \''+req_date+'\'; INSERT INTO \'Meter_Calendar\' (DeviceRowID,Value,Counter,Date) VALUES ('+devicerowid+', \''+Number((obj[i]["conso"]))+'\', \''+Math.round(cumul)+'\', \''+req_date+'\');') ;
                                 cumul+=Number(obj[i]["conso"]);
