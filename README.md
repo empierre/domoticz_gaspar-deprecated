@@ -10,14 +10,14 @@ If you appreciate this software, please show it off ! [![PayPal donate button](h
 - Then in Devices, add it to the devices. (mark down the id for later).
 - When in Utility, edit the device and change it to Electric (instant+counter) type.
 
-## modules to install
+## modules to install - linux
 
     sudo apt-get install sqlite3 node npm
     sudo apt-get install python3 python3-numpy python3-dateutil python3-requests python3-lxml
     npm install winston 
     git clone https://github.com/empierre/domoticz_gaspar.git
 
-## rename configuration file, change login/pass/id
+### rename configuration file, change login/pass/id
 
     cp _domoticz_gaspar.cfg domoticz_gaspar.cfg
     nano domoticz_gaspar.cfg
@@ -32,12 +32,32 @@ Where DOMOTICZ_ID is id device on domoticz.
 
 Configuration file will not be deleted in future updates.
 
+## modules to install - Windows
+
+    install sqlite3 node npm python3
+    pip i python3-lxml
+    npm install winston@2.4.2 
+    git clone https://github.com/empierre/domoticz_gaspar.git
+
+### rename configuration file, change login/pass/id
+
+    edit domoticz_gaspar.bat
+
+and change:
+
+    GASPAR_USERNAME="nom.prenom@mail.com"
+    GASPAR_PASSWORD="password"
+    DOMOTICZ_ID=547
+
+Where DOMOTICZ_ID is id device on domoticz. 
+
+Configuration file will not be deleted in future updates.
 
 ## testing before launch
 
 Manually launch
 
-    ./domoticz_gaspar.sh
+    ./domoticz_gaspar.sh   or .bat for windows
 
 N.B. If login is not ok, you'll get a nodejs error on console for data will be missing (will be changed).
 
