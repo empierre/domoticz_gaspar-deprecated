@@ -85,13 +85,14 @@ function getCumulBefore(year,month) {
                 var obj = JSON.parse(fs.readFileSync(filePath, 'utf8'));
                 for (var i = 0; i < month-1; ++i) {
                          conso_cumul= conso_cumul + Number(obj[i]["conso"]);
-                         //console.log(obj[i]["conso"])
+                         console.log(obj[i]["conso"])
                 }
                 //console.log(year+" "+month+" "+conso_cumul)
                 return(conso_cumul);
         } catch (e) {
                 // It isn't accessible
                 console.log("Exception opening export_months_values.json : "+e);
+                return(conso_cumul);
         }
 }
 function generateMonthDays() {
