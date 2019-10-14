@@ -3,7 +3,7 @@ Get Gazpar smart meter data and push it to domoticz
 !!!Experimental!!! Not all is working, work in progress
 
 
-If you appreciate this software, please show it off ! [![PayPal donate button](http://img.shields.io/paypal/donate.png?color=yellow)](https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=epierre@e-nef.com&currency_code=EUR&amount=&item_name=thanks "Donate once-off to this project using Paypal")
+If you appreciate this software, please show it off ! [![PayPal donate button](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=epierre@e-nef.com&currency_code=EUR&amount=&item_name=thanks "Donate once-off to this project using Paypal")
 
 # create a device in Domoticz
 - In Domoticz, go to hardware, create a virtual "rfx meter counter" or "Dummy".
@@ -12,7 +12,7 @@ If you appreciate this software, please show it off ! [![PayPal donate button](h
 
 ## modules to install - linux
 
-    sudo apt-get install sqlite3 node npm
+    sudo apt-get install sqlite3 nodejs npm
     sudo apt-get install python3 python3-numpy python3-dateutil python3-requests python3-lxml
     npm install winston 
     git clone https://github.com/empierre/domoticz_gaspar.git
