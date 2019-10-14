@@ -51,7 +51,7 @@ function getTotal() {
                 return(conso_cumul);
         } catch (e) {
                 // It isn't accessible
-                console.log("Exception opening export_months_values.json : "+e);
+                console.warn("-- Exception opening export_months_values.json : "+e);
         }
 
 }
@@ -72,7 +72,7 @@ function generateDayHours() {
                 }
         } catch (e) {
                 // It isn't accessible
-                console.log("Exception opening export_hours_values.json : "+e);
+                console.warn("-- Exception opening export_hours_values.json : "+e);
         }
 }
 function getCumulBefore(year,month) {
@@ -85,7 +85,7 @@ function getCumulBefore(year,month) {
                 var obj = JSON.parse(fs.readFileSync(filePath, 'utf8'));
                 for (var i = 0; i < month-1; ++i) {
                          conso_cumul= conso_cumul + Number(obj[i]["conso"]);
-                         console.log(obj[i]["conso"])
+                         // console.log(obj[i]["conso"])
                 }
                 //console.log(year+" "+month+" "+conso_cumul)
                 return(conso_cumul);
@@ -113,7 +113,7 @@ function generateMonthDays() {
                 }
         } catch (e) {
                 // It isn't accessible
-                console.log("Exception opening export_months_values.json : "+e);
+                console.warn("-- Exception opening export_months_values.json : "+e);
         }
 }
 
