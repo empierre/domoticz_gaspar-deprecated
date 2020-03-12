@@ -14,7 +14,7 @@ If you appreciate this software, please show it off ! [![PayPal donate button](h
 
     sudo apt-get install sqlite3 nodejs npm
     sudo apt-get install python3 python3-numpy python3-dateutil python3-requests python3-lxml
-    npm install winston 
+    npm install winston@2.4.2 
     git clone https://github.com/empierre/domoticz_gaspar.git
 
 ### rename configuration file, change login/pass/id
