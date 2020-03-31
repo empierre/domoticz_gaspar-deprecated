@@ -29,7 +29,7 @@ var q_month_s=dateObj.getUTCMonth();
 var q_month_e=dateObj.getUTCMonth() + 1;
 var q_day_s=dateObj.getUTCDate()-1;
 var q_day_e=dateObj.getUTCDate();
-var q_hour=dateObj.getUTCHours();
+var q_hour=dateObj.getHours();
 var q_minutes=dateObj.getUTCMinutes();
 
 var BASE_DIR = process.env.BASE_DIR || '/home/pi/domoticz/domoticz_gaspar';
