@@ -122,6 +122,6 @@ function generateMonthDays() {
 
 logger.add(winston.transports.File, {filename: './lnk95.log'});
 generateMonthDays();
-var req_date=''+q_year+'-'+pad(q_month_e,2)+'-'+pad(q_day_s,2)+' '+pad(q_hour,2)+':'++pad(q_minutes,2)+':00';
-console.log('update DeviceStatus set lastupdate = \''+req_date+'\' where id = '+devicerowid+';');
+var req_date=''+q_year+'-'+pad(q_month_e,2)+'-'+pad(q_day_s,2)+' '+pad(q_hour,2)+':'+pad(q_minutes,2)+':00';
+console.log('UPDATE DeviceStatus SET lastupdate = \''+req_date+'\' WHERE id = '+devicerowid+';');
 //generateDayHours();
