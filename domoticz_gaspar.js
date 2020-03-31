@@ -67,7 +67,7 @@ function generateDayHours() {
 
                 for (var i = 0; i < Object.keys(obj).length; ++i) {
                         var req_date=''+q_year+'-'+pad(q_month_e,2)+'-'+pad(q_day_s,2)+' '+pad(obj[i]["time"].substr(0, 5),5)+':00';
-                        if (obj[i]["conso"]>0) {
+                        if (obj[i]["conso"]>=0) {
                                 console.log('DELETE FROM \'Meter\' WHERE devicerowid='+devicerowid+' and date = \''+req_date+'\'; INSERT INTO \'Meter\' (DeviceRowID,Usage,Value,Date) VALUES ('+devicerowid+', \''+Math.round(obj[i]["conso"]*10000)+'\', \''+Math.round(cumul*1000)+'\', \''+req_date+'\');') ;
                                 cumul=cumul+(obj[i]["conso"]);
                         }
@@ -108,7 +108,7 @@ function generateMonthDays() {
                 var obj = JSON.parse(fs.readFileSync(filePath, 'utf8'));
                 for (var i = 0; i < Object.keys(obj).length; ++i) {
                         var req_date=pad(obj[i]["time"].substr(6, 4),4)+'-'+pad(obj[i]["time"].substr(3, 2),2)+'-'+pad(obj[i]["time"].substr(0, 2),2)
-                        if (obj[i]["conso"]>0) {
+                        if (obj[i]["conso"]>=0) {
                                 console.log('DELETE FROM \'Meter_Calendar\' WHERE devicerowid='+devicerowid+' and date = \''+req_date+'\'; INSERT INTO \'Meter_Calendar\' (DeviceRowID,Value,Counter,Date) VALUES ('+devicerowid+', \''+Number((obj[i]["conso"]*1000))+'\', \''+Math.round(cumul)+'\', \''+req_date+'\');') ;
                                 cumul+=Number(obj[i]["conso"]);
                         }
