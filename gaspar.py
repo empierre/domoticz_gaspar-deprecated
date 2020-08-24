@@ -276,8 +276,8 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
                'p_p_col_id':'column-3',
                'p_p_col_count':'5',
                'p_p_col_pos':'3',
-               '_eConsosynthese_WAR_eConsoportlet__jsfBridgeAjax':'true',
-               '_eConsosynthese_WAR_eConsoportlet__facesViewIdResource':'/views/conso/detaille/consoDetailleViewMode.xhtml'
+               '_eConsoconsoDetaille_WAR_eConsoportlet__jsfBridgeAjax':'true',
+               '_eConsoconsoDetaille_WAR_eConsoportlet__facesViewIdResource':'/views/conso/detaille/consoDetailleViewMode.xhtml'
     }
 
     session.cookies['KPISavedRef'] ='https://monespace.grdf.fr/monespace/particulier/consommation/consommations'
