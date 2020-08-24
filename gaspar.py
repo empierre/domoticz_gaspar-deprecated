@@ -94,7 +94,7 @@ def login(username, password):
 
     session.cookies['KPISavedRef'] ='https://monespace.grdf.fr/monespace/connexion'
 
-    session.get(LOGIN_BASE_URI + API_ENDPOINT_LOGIN, data=payload, allow_redirects=False)
+    session.get(LOGIN_BASE_URI + API_ENDPOINT_LOGIN,  verify=False, data=payload, allow_redirects=False)
     
     req = session.post(LOGIN_BASE_URI + API_ENDPOINT_LOGIN, data=payload, allow_redirects=False)
 
