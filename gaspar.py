@@ -194,6 +194,8 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
                '_eConsosynthese_WAR_eConsoportlet__facesViewIdResource':'/views/compteur/synthese/syntheseViewMode.xhtml' }
 
     r=session.get('https://monespace.grdf.fr/monespace/particulier/consommation/consommations', allow_redirects=False)
+    if req.status_code != requests.codes.ok:
+        print("status 1e appel:"+r.status_code+'\n');
     #print(session.headers)
     #print(session.cookies)
     #print(payload)
@@ -239,6 +241,8 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
     session.cookies['KPISavedRef'] ='https://monespace.grdf.fr/monespace/particulier/consommation/consommations'
 
     req = session.post('https://monespace.grdf.fr/monespace/particulier/consommation/consommations', allow_redirects=False, data=payload, params=params)
+    if req.status_code != requests.codes.ok:
+        print("status 2e appel:"+r.status_code+'\n');
 
 
     #print(session.headers)
@@ -283,7 +287,8 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
     session.cookies['KPISavedRef'] ='https://monespace.grdf.fr/monespace/particulier/consommation/consommations'
 
     req = session.post('https://monespace.grdf.fr/monespace/particulier/consommation/consommations', allow_redirects=False, data=payload, params=params)
-
+    if req.status_code != requests.codes.ok:
+        print("status recup data: "+r.status_code+'\n');
     #print('\n4.1- header\n')
     #print(session.headers)
     #print('\n4.2- cookies\n')
@@ -343,3 +348,4 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
     #    raise GazparServiceException(html.unescape(res['etat']['erreurText']))
 
     return res
+
