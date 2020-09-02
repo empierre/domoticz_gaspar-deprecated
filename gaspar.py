@@ -94,7 +94,7 @@ def login(username, password):
 
     session.cookies['KPISavedRef'] ='https://monespace.grdf.fr/monespace/connexion'
 
-    session.get(LOGIN_BASE_URI + API_ENDPOINT_LOGIN,  verify=False, data=payload, allow_redirects=False)
+    session.get(LOGIN_BASE_URI + API_ENDPOINT_LOGIN, verify=False, timeout=None, data=payload, allow_redirects=False)
     
     req = session.post(LOGIN_BASE_URI + API_ENDPOINT_LOGIN, data=payload, allow_redirects=False)
 
@@ -193,8 +193,8 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
                '_eConsosynthese_WAR_eConsoportlet__jsfBridgeAjax':'true',
                '_eConsosynthese_WAR_eConsoportlet__facesViewIdResource':'/views/compteur/synthese/syntheseViewMode.xhtml' }
 
-    r=session.get('https://monespace.grdf.fr/monespace/particulier/consommation/consommations', allow_redirects=False)
-    if req.status_code != requests.codes.ok:
+    r=session.get('https://monespace.grdf.fr/monespace/particulier/consommation/consommations', allow_redirects=False, verify=False, timeout=None)
+    if r.status_code != requests.codes.ok:
         print("status 1e appel:"+r.status_code+'\n');
     #print(session.headers)
     #print(session.cookies)
